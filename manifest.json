@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Tweet Tool Finder",
+  "version": "1.0.0",
+  "description": "Scans your X/Twitter feed and collects tweets about useful dev tools, hacks, and productivity tips.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://127.0.0.1:7849/*"],
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://x.com/*", "*://twitter.com/*"],
+      "js": ["js/content.js"],
+      "css": ["css/sidebar.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  }
+}

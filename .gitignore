@@ -1,0 +1,3 @@
+node_modules/
+mcp-server/build/
+.DS_Store

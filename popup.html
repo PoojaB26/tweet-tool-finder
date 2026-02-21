@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 380px;
+      font-family: 'DM Sans', sans-serif;
+      background: #0d0d0f;
+      color: #e8e6e3;
+      padding: 0;
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .popup-header h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: #00e5a0;
+      letter-spacing: -0.5px;
+    }
+
+    .popup-header p {
+      font-size: 12px;
+      color: #8a8a9a;
+      margin-top: 4px;
+    }
+
+    .popup-body {
+      padding: 18px 22px 22px;
+    }
+
+    label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6a6a7a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 8px;
+      color: #e8e6e3;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: #00e5a0;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .toggle-row span {
+      font-size: 13px;
+      color: #c0c0cc;
+    }
+
+    .toggle {
+      position: relative;
+      width: 42px;
+      height: 24px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #2a2a3e;
+      border-radius: 24px;
+      transition: 0.3s;
+    }
+
+    .toggle-slider:before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: #6a6a7a;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: #00e5a0;
+    }
+
+    .toggle input:checked + .toggle-slider.pause-slider {
+      background: #ffb800;
+    }
+
+    .toggle input:checked + .toggle-slider:before {
+      transform: translateX(18px);
+      background: #0d0d0f;
+    }
+
+    .btn-save {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: #00e5a0;
+      color: #0d0d0f;
+      border: none;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-save:hover {
+      background: #00cc8e;
+    }
+
+    .btn-save:active {
+      transform: scale(0.98);
+    }
+
+    .status {
+      text-align: center;
+      font-size: 12px;
+      color: #00e5a0;
+      margin-top: 10px;
+      min-height: 18px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      flex: 1;
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #00e5a0;
+    }
+
+    .stat-card .label {
+      font-size: 10px;
+      color: #6a6a7a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .handle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #8a8a9a;
+    }
+
+    .handle-chip .remove-handle {
+      cursor: pointer;
+      color: #5a5a6a;
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .handle-chip .remove-handle:hover {
+      color: #ff3b5c;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-header">
+    <h1>⚡ Tweet Tool Finder</h1>
+    <p>Find dev tools & productivity hacks in your feed</p>
+  </div>
+
+  <div class="popup-body">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="number" id="scannedCount">0</div>
+        <div class="label">Scanned</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="foundCount">0</div>
+        <div class="label">Found</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="dailyCount">0</div>
+        <div class="label">/ 1000 today</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Anthropic API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-..." />
+    </div>
+
+    <div class="toggle-row">
+      <span>Auto-scan feed</span>
+      <label class="toggle">
+        <input type="checkbox" id="autoScan" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <span>Pause scanning</span>
+      <label class="toggle">
+        <input type="checkbox" id="pauseScan" />
+        <span class="toggle-slider pause-slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <span>Show sidebar panel</span>
+      <label class="toggle">
+        <input type="checkbox" id="showSidebar" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="field-group" style="margin-top:16px">
+      <label>Ignore Handles</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="handleInput" placeholder="@username" style="flex:1" />
+        <button id="addHandle" style="
+          padding:8px 14px; background:#1a1a2e; border:1px solid #2a2a3e;
+          border-radius:8px; color:#00e5a0; font-family:'JetBrains Mono',monospace;
+          font-size:12px; font-weight:600; cursor:pointer;
+        ">+</button>
+      </div>
+      <div id="handleList" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+    </div>
+
+    <button class="btn-save" id="saveBtn">Save Settings</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script src="js/popup.js"></script>
+</body>
+</html>

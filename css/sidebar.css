@@ -1,0 +1,460 @@
+/* Tweet Tool Finder Sidebar */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+#ttf-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100vh;
+  background: #0d0d0f;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  z-index: 99999;
+  font-family: 'DM Sans', sans-serif;
+  color: #e8e6e3;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+}
+
+#ttf-sidebar.ttf-open {
+  transform: translateX(0);
+}
+
+/* Toggle button */
+#ttf-toggle-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #00e5a0, #00b87a);
+  border: none;
+  cursor: pointer;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 229, 160, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 22px;
+}
+
+#ttf-toggle-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(0, 229, 160, 0.45);
+}
+
+#ttf-toggle-btn .ttf-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  background: #ff3b5c;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+
+/* Sidebar Header */
+.ttf-header {
+  padding: 20px 20px 16px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.ttf-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ttf-header h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #00e5a0;
+  letter-spacing: -0.3px;
+}
+
+.ttf-close-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #6a6a7a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.ttf-close-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #e8e6e3;
+}
+
+.ttf-pause-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(0, 229, 160, 0.1);
+  border: 1px solid rgba(0, 229, 160, 0.2);
+  color: #00e5a0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  transition: all 0.2s;
+  letter-spacing: -2px;
+}
+
+.ttf-pause-btn:hover {
+  background: rgba(0, 229, 160, 0.2);
+}
+
+.ttf-pause-btn.paused {
+  background: rgba(255, 184, 0, 0.12);
+  border-color: rgba(255, 184, 0, 0.25);
+  color: #ffb800;
+  letter-spacing: normal;
+  font-size: 12px;
+}
+
+.ttf-pause-btn.paused:hover {
+  background: rgba(255, 184, 0, 0.22);
+}
+
+/* Filter Tabs */
+.ttf-tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.ttf-tab {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #6a6a7a;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ttf-tab:hover {
+  background: rgba(255,255,255,0.08);
+  color: #c0c0cc;
+}
+
+.ttf-tab.active {
+  background: rgba(0, 229, 160, 0.12);
+  border-color: rgba(0, 229, 160, 0.3);
+  color: #00e5a0;
+}
+
+/* Scanning status */
+.ttf-scan-status {
+  padding: 10px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #6a6a7a;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ttf-scan-status .ttf-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00e5a0;
+  animation: ttf-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ttf-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.ttf-scan-status.idle .ttf-pulse {
+  background: #6a6a7a;
+  animation: none;
+}
+
+/* Tweet Cards */
+.ttf-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ttf-cards::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ttf-cards::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ttf-cards::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 4px;
+}
+
+.ttf-card {
+  background: #13131a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 0.2s, transform 0.15s;
+  cursor: pointer;
+  animation: ttf-slideIn 0.3s ease-out;
+}
+
+@keyframes ttf-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ttf-card:hover {
+  border-color: rgba(0, 229, 160, 0.25);
+  transform: translateY(-1px);
+}
+
+.ttf-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ttf-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2a2a3e;
+  object-fit: cover;
+}
+
+.ttf-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8e6e3;
+}
+
+.ttf-handle {
+  font-size: 12px;
+  color: #5a5a6a;
+}
+
+.ttf-card-body {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #8a8a9a;
+  margin-bottom: 10px;
+}
+
+.ttf-card-summary {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #e8e6e3;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  background: rgba(0, 229, 160, 0.05);
+  border-left: 2px solid #00e5a0;
+  border-radius: 0 6px 6px 0;
+}
+
+.ttf-open-icon {
+  font-size: 16px;
+  color: #4a4a5a;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.ttf-card:hover .ttf-open-icon {
+  color: #00e5a0;
+}
+
+.ttf-delete-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #4a4a5a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.ttf-card:hover .ttf-delete-btn {
+  opacity: 1;
+}
+
+.ttf-delete-btn:hover {
+  background: rgba(255, 59, 92, 0.12);
+  border-color: rgba(255, 59, 92, 0.25);
+  color: #ff3b5c;
+}
+
+.ttf-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ttf-tag {
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ttf-tag.tool {
+  background: rgba(0, 229, 160, 0.1);
+  color: #00e5a0;
+  border: 1px solid rgba(0, 229, 160, 0.2);
+}
+
+.ttf-tag.hack {
+  background: rgba(108, 99, 255, 0.1);
+  color: #8b83ff;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.ttf-tag.productivity {
+  background: rgba(255, 184, 0, 0.1);
+  color: #ffb800;
+  border: 1px solid rgba(255, 184, 0, 0.2);
+}
+
+/* Empty state */
+.ttf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.ttf-empty-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.ttf-empty h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: #6a6a7a;
+  margin-bottom: 6px;
+}
+
+.ttf-empty p {
+  font-size: 12px;
+  color: #4a4a5a;
+  line-height: 1.5;
+}
+
+/* Footer */
+.ttf-footer {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ttf-footer button {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: #6a6a7a;
+  white-space: nowrap;
+}
+
+.ttf-footer button:hover {
+  background: rgba(255,255,255,0.08);
+  color: #c0c0cc;
+}
+
+.ttf-footer .ttf-copy-ctx-btn {
+  flex: 1;
+  background: rgba(0, 229, 160, 0.12);
+  border-color: rgba(0, 229, 160, 0.25);
+  color: #00e5a0;
+}
+
+.ttf-footer .ttf-copy-ctx-btn:hover {
+  background: rgba(0, 229, 160, 0.22);
+}
+
+.ttf-footer .ttf-sync-btn {
+  background: rgba(255, 184, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.2);
+  color: #ffb800;
+}
+
+.ttf-footer .ttf-sync-btn:hover {
+  background: rgba(255, 184, 0, 0.2);
+}
+
+.ttf-footer .ttf-export-btn {
+  background: rgba(108, 99, 255, 0.1);
+  border-color: rgba(108, 99, 255, 0.2);
+  color: #8b83ff;
+}
+
+.ttf-footer .ttf-export-btn:hover {
+  background: rgba(108, 99, 255, 0.2);
+}
