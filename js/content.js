@@ -430,10 +430,9 @@
       return;
     }
 
-    // Only scan on pages that have a feed (home, profile, search, lists)
+    // Only scan on home feed and search pages
     const path = window.location.pathname;
-    const skipPages = ['/settings', '/messages', '/i/', '/login', '/signup'];
-    if (skipPages.some(p => path.startsWith(p))) return;
+    if (path !== '/home' && !path.startsWith('/search')) return;
 
     const tweets = extractTweetsFromDOM();
     if (tweets.length > 0) {
