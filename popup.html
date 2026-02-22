@@ -80,9 +80,28 @@
       border-top: 1px solid rgba(255,255,255,0.04);
     }
 
-    .toggle-row span {
+    .toggle-row > span {
       font-size: 13px;
       color: #c0c0cc;
+      position: relative;
+      cursor: default;
+    }
+
+    .toggle-row > span[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 0;
+      top: calc(100% + 6px);
+      width: 220px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 11px;
+      color: #8a8a9a;
+      line-height: 1.5;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .toggle {
@@ -246,7 +265,7 @@
     </div>
 
     <div class="toggle-row">
-      <span>Auto-scan feed</span>
+      <span data-tooltip="Starts the feed observer on page load. Turn off to disable scanning entirely until re-enabled.">Auto-scan feed</span>
       <label class="toggle">
         <input type="checkbox" id="autoScan" checked />
         <span class="toggle-slider"></span>
@@ -254,7 +273,7 @@
     </div>
 
     <div class="toggle-row">
-      <span>Pause scanning</span>
+      <span data-tooltip="Temporarily stops classifying tweets. The observer keeps running so it resumes instantly when unpaused.">Pause scanning</span>
       <label class="toggle">
         <input type="checkbox" id="pauseScan" />
         <span class="toggle-slider pause-slider"></span>
@@ -262,7 +281,7 @@
     </div>
 
     <div class="toggle-row">
-      <span>Show sidebar panel</span>
+      <span data-tooltip="Toggles the sidebar overlay on X.">Show sidebar panel</span>
       <label class="toggle">
         <input type="checkbox" id="showSidebar" checked />
         <span class="toggle-slider"></span>
