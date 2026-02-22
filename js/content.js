@@ -11,6 +11,7 @@
   let isPaused = false;
   let scanQueue = [];
   let activeFilter = 'all'; // 'all', 'tool', 'hack', 'productivity'
+  let searchQuery = '';
   let sidebarOpen = false;
 
   // Rate limiting: max concurrent API calls
@@ -109,7 +110,6 @@
       </div>
       <div class="ttf-footer">
         <button class="ttf-clear-btn" id="ttf-clear">Clear</button>
-        <button class="ttf-sync-btn" id="ttf-sync-mcp">🔄 Sync MCP</button>
         <button class="ttf-copy-ctx-btn" id="ttf-copy-ctx">📋 Copy for LLM</button>
         <button class="ttf-export-btn" id="ttf-export-ctx">⬇ JSON</button>
       </div>
@@ -119,7 +119,6 @@
     // Event listeners
     document.getElementById('ttf-close').addEventListener('click', toggleSidebar);
     document.getElementById('ttf-clear').addEventListener('click', clearAll);
-    document.getElementById('ttf-sync-mcp').addEventListener('click', syncAllToMCP);
     document.getElementById('ttf-copy-ctx').addEventListener('click', copyContext);
     document.getElementById('ttf-export-ctx').addEventListener('click', exportContext);
 
@@ -355,7 +354,6 @@
 
         foundTweets.unshift(enrichedTweet);
         chrome.runtime.sendMessage({ type: 'SAVE_FOUND_TWEET', tweet: enrichedTweet });
-        syncToMCP(enrichedTweet);
 
         renderCards();
         updateBadge();
@@ -550,56 +548,4 @@
     setTimeout(() => { toast.style.opacity = '0'; }, 2500);
   }
 
-  // ── MCP Server Sync ───────────────────────────────────
-  async function syncToMCP(tweet) {
-    try {
-      const payload = {
-        id: tweet.id,
-        tool: tweet.toolName || null,
-        category: tweet.category,
-        summary: tweet.summary,
-        author: tweet.author,
-        handle: tweet.handle,
-        url: tweet.url,
-        text: tweet.text,
-        confidence: tweet.confidence,
-        foundAt: tweet.foundAt
-      };
-
-      chrome.runtime.sendMessage({ type: 'MCP_SYNC', tweets: payload }, (resp) => {
-        if (resp && !resp.success) {
-          // MCP server not running — that's fine
-        }
-      });
-    } catch (e) {
-      // Silently fail
-    }
-  }
-
-  async function syncAllToMCP() {
-    try {
-      const tweets = foundTweets.map(t => ({
-        id: t.id,
-        tool: t.toolName || null,
-        category: t.category,
-        summary: t.summary,
-        author: t.author,
-        handle: t.handle,
-        url: t.url,
-        text: t.text,
-        confidence: t.confidence,
-        foundAt: t.foundAt
-      }));
-
-      chrome.runtime.sendMessage({ type: 'MCP_SYNC', tweets }, (resp) => {
-        if (resp && resp.success) {
-          showToast('Synced to MCP server!');
-        } else {
-          showToast('MCP server not running — start it first');
-        }
-      });
-    } catch (e) {
-      showToast('MCP server not running — start it first');
-    }
-  }
 })();

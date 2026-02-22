@@ -117,25 +117,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.type === 'MCP_SYNC') {
-    fetch('http://127.0.0.1:7849/tweets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(request.tweets)
-    })
-      .then(r => r.json())
-      .then(data => sendResponse({ success: true, data }))
-      .catch(err => sendResponse({ success: false, error: err.message }));
-    return true;
-  }
-
-  if (request.type === 'MCP_PING') {
-    fetch('http://127.0.0.1:7849/tweets')
-      .then(r => r.json())
-      .then(data => sendResponse({ success: true, data }))
-      .catch(err => sendResponse({ success: false, error: err.message }));
-    return true;
-  }
 });
 
 async function classifyTweet(tweetText, apiKey) {
