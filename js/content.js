@@ -95,6 +95,7 @@
           <button class="ttf-tab" data-filter="hack">Hacks</button>
           <button class="ttf-tab" data-filter="productivity">Productivity</button>
         </div>
+        <input class="ttf-search" id="ttf-search" type="text" placeholder="Search saved tweets..." autocomplete="off" />
       </div>
       <div class="ttf-scan-status" id="ttf-scan-status">
         <span class="ttf-pulse"></span>
@@ -120,6 +121,10 @@
     document.getElementById('ttf-close').addEventListener('click', toggleSidebar);
     document.getElementById('ttf-clear').addEventListener('click', clearAll);
     document.getElementById('ttf-copy-ctx').addEventListener('click', copyContext);
+    document.getElementById('ttf-search').addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderCards();
+    });
     document.getElementById('ttf-export-ctx').addEventListener('click', exportContext);
 
     sidebar.querySelectorAll('.ttf-tab').forEach(tab => {
@@ -176,9 +181,17 @@
     const container = document.getElementById('ttf-cards');
     if (!container) return;
 
-    const filtered = activeFilter === 'all'
+    let filtered = activeFilter === 'all'
       ? foundTweets
       : foundTweets.filter(t => t.category === activeFilter);
+
+    if (searchQuery) {
+      filtered = filtered.filter(t => {
+        const haystack = [t.toolName, t.summary, t.text, t.author, t.handle]
+          .filter(Boolean).join(' ').toLowerCase();
+        return haystack.includes(searchQuery);
+      });
+    }
 
     if (filtered.length === 0) {
       container.innerHTML = `
