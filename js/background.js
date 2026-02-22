@@ -126,6 +126,8 @@ async function classifyTweet(tweetText, apiKey) {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
       'anthropic-version': '2023-06-01',
+      // Required to call Anthropic directly from the browser. The user's key is
+      // stored in Chrome local storage — no server to proxy through.
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
